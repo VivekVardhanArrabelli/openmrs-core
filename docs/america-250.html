@@ -1,0 +1,855 @@
+<title>America at 250 — The Forty Extra Years</title>
+
+<style>
+  /* ============ tokens — a committed single-theme night design ============ */
+  :root {
+    color-scheme: dark;
+    --ground:      #0B0F22;
+    --ground-2:    #0E1329;   /* section alternation */
+    --panel:       #121834;
+    --panel-edge:  #262E55;
+    --ink:         #E9E4D6;   /* chalky parchment */
+    --ink-2:       #A7ACC2;   /* muted, navy-biased */
+    --ink-3:       #6E7490;   /* captions, axes */
+    --hairline:    #232A4A;
+    --grid:        #1B2140;
+    --gold:        #B8862B;   /* validated data gold */
+    --gold-bright: #E8B84B;   /* display + fireworks only */
+    --blue:        #5B8CCC;
+    --red:         #C65348;
+    --display: "Baskerville Old Face", Baskerville, "Big Caslon", "Libre Baskerville", "Palatino Linotype", Palatino, Georgia, serif;
+    --body:    "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --utility: "Avenir Next", Avenir, "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+  }
+  /* the night holds in both toggle states — a fireworks page needs its dark sky */
+  :root[data-theme="light"], :root[data-theme="dark"] { color-scheme: dark; }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: rgba(232,184,75,.28); }
+
+  a { color: var(--gold-bright); text-decoration: none; border-bottom: 1px solid rgba(232,184,75,.35); }
+  a:hover { border-bottom-color: var(--gold-bright); }
+  :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; border-radius: 2px; }
+
+  .eyebrow {
+    font-family: var(--utility);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .eyebrow .sep { color: var(--gold); padding: 0 .5em; }
+
+  /* ============ hero ============ */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    isolation: isolate;
+    border-bottom: 1px solid var(--hairline);
+  }
+  #sky {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    cursor: pointer;
+  }
+  .hero-inner {
+    position: relative; z-index: 1;
+    padding: 96px 24px 72px;
+    max-width: 880px;
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(44px, 8.5vw, 96px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin: 22px 0 0;
+    text-wrap: balance;
+    text-shadow: 0 1px 10px rgba(11,15,34,.55);
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-bright);
+  }
+  .hero .dek {
+    font-family: var(--body);
+    font-size: clamp(17px, 2.2vw, 21px);
+    color: var(--ink-2);
+    max-width: 58ch;
+    margin: 26px auto 0;
+    text-wrap: balance;
+  }
+  .hero .dek strong { color: var(--ink); font-weight: 600; }
+
+  .stat-pair {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: clamp(20px, 5vw, 52px);
+    margin-top: 46px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat { text-align: center; }
+  .stat .num {
+    font-family: var(--display);
+    font-size: clamp(46px, 7vw, 76px);
+    line-height: 1;
+    color: var(--ink);
+  }
+  .stat.now .num { color: var(--gold-bright); }
+  .stat .lbl {
+    font-family: var(--utility);
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-top: 10px;
+  }
+  .stat-arrow {
+    font-family: var(--display);
+    font-size: clamp(26px, 4vw, 40px);
+    color: var(--ink-3);
+    transform: translateY(-6px);
+  }
+  .stat-caption {
+    font-family: var(--utility);
+    font-size: 12.5px;
+    color: var(--ink-3);
+    margin-top: 22px;
+    letter-spacing: .04em;
+  }
+  .sky-hint {
+    position: absolute;
+    bottom: 26px; left: 0; right: 0;
+    z-index: 1;
+    font-family: var(--utility);
+    font-size: 12px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    pointer-events: none;
+  }
+
+  /* ============ sections ============ */
+  section { padding: 96px 24px; }
+  .measure { max-width: 66ch; margin: 0 auto; }
+  .wide    { max-width: 1080px; margin: 0 auto; }
+
+  .sec-head { margin-bottom: 40px; }
+  .sec-head h2 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(30px, 4.5vw, 44px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 14px 0 0;
+    text-wrap: balance;
+  }
+  .sec-head p.lede {
+    color: var(--ink-2);
+    font-size: 18px;
+    max-width: 62ch;
+    margin: 18px 0 0;
+  }
+
+  /* ============ chart ============ */
+  .chart-section { background: var(--ground-2); border-block: 1px solid var(--hairline); }
+  .chart-scroll { overflow-x: auto; padding-bottom: 6px; }
+  .chart-wrap { position: relative; min-width: 680px; }
+  .chart-wrap svg { display: block; font-family: var(--utility); }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(18,24,52,.96);
+    border: 1px solid var(--panel-edge);
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-family: var(--utility);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink);
+    max-width: 240px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.45);
+    opacity: 0;
+    transition: opacity .12s ease;
+    z-index: 3;
+    font-variant-numeric: tabular-nums;
+  }
+  .tooltip .tt-year { font-weight: 700; letter-spacing: .04em; }
+  .tooltip .tt-val  { color: var(--ink-2); }
+  .tooltip .tt-mile { margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--hairline); color: var(--ink); }
+  .tooltip .tt-mile::before { content: "●"; color: var(--gold); font-size: 9px; vertical-align: 1px; margin-right: 6px; }
+
+  .chart-notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    margin-top: 14px;
+    font-family: var(--utility);
+    font-size: 12.5px;
+    color: var(--ink-3);
+  }
+  .key { display: inline-flex; align-items: center; gap: 8px; }
+  .key .swatch-line   { width: 26px; height: 0; border-top: 2px solid var(--gold); }
+  .key .swatch-dashed { width: 26px; height: 0; border-top: 2px dashed var(--gold); opacity: .75; }
+  .key .swatch-dot    { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 2px var(--ground-2); }
+  .key .swatch-dip    { color: var(--red); font-size: 11px; }
+
+  details.data-table { margin-top: 30px; font-family: var(--utility); }
+  details.data-table summary {
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    letter-spacing: .05em;
+    width: max-content;
+  }
+  details.data-table summary:hover { color: var(--ink); }
+  details.data-table table {
+    margin-top: 16px;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    font-variant-numeric: tabular-nums;
+  }
+  details.data-table th, details.data-table td {
+    text-align: left;
+    padding: 7px 26px 7px 0;
+    border-bottom: 1px solid var(--hairline);
+    color: var(--ink-2);
+  }
+  details.data-table th { color: var(--ink-3); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: .12em; }
+  details.data-table td:nth-child(2) { color: var(--ink); }
+
+  /* ============ timeline ============ */
+  .timeline { position: relative; max-width: 760px; margin: 64px auto 0; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 92px; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(var(--hairline), var(--hairline));
+  }
+  .tl-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 42px;
+    padding: 0 0 52px;
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item .tl-year {
+    font-family: var(--display);
+    font-size: 26px;
+    color: var(--gold-bright);
+    text-align: right;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .tl-item .tl-dot {
+    position: absolute;
+    left: 92px; top: 11px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px var(--ground);
+    transform: translateX(-4px);
+  }
+  .tl-item.bookend .tl-dot {
+    background: var(--ground);
+    border: 2px solid var(--gold-bright);
+    width: 11px; height: 11px;
+    transform: translateX(-5px);
+    top: 9px;
+  }
+  .tl-item h3 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 22px;
+    margin: 0 0 8px;
+    line-height: 1.3;
+    letter-spacing: .002em;
+  }
+  .tl-item p { margin: 0; color: var(--ink-2); font-size: 16.5px; max-width: 56ch; }
+  .tl-item p strong { color: var(--ink); font-weight: 600; }
+  .bookend-tag {
+    display: inline-block;
+    font-family: var(--utility);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    border: 1px solid rgba(232,184,75,.4);
+    border-radius: 3px;
+    padding: 2px 8px;
+    margin-bottom: 10px;
+  }
+
+  /* scroll reveal */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ============ coda ============ */
+  .coda { background: var(--ground-2); border-top: 1px solid var(--hairline); text-align: center; padding: 110px 24px 90px; }
+  .coda h2 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(30px, 4.5vw, 46px);
+    letter-spacing: -0.01em;
+    margin: 16px 0 0;
+    text-wrap: balance;
+  }
+  .coda .measure p { color: var(--ink-2); text-align: left; }
+  .coda .measure { margin-top: 30px; }
+  .signoff {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(22px, 3vw, 30px);
+    color: var(--gold-bright);
+    margin-top: 54px;
+  }
+  .encore {
+    margin-top: 30px;
+    font-family: var(--utility);
+    font-size: 13px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    background: none;
+    border: 1px solid var(--panel-edge);
+    border-radius: 999px;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .encore:hover { border-color: var(--gold); color: var(--ink); }
+  .colophon {
+    margin-top: 70px;
+    padding-top: 26px;
+    border-top: 1px solid var(--hairline);
+    font-family: var(--utility);
+    font-size: 12.5px;
+    color: var(--ink-3);
+    line-height: 1.8;
+    max-width: 68ch;
+    margin-left: auto; margin-right: auto;
+  }
+
+  @media (max-width: 640px) {
+    .timeline::before { left: 64px; }
+    .tl-item { grid-template-columns: 46px 1fr; gap: 34px; }
+    .tl-item .tl-dot { left: 64px; }
+    .tl-item .tl-year { font-size: 20px; }
+    section { padding: 72px 18px; }
+  }
+</style>
+
+<!-- ============================== HERO ============================== -->
+<header class="hero">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <div class="eyebrow">July 4, 1776 <span class="sep">✦</span> July 4, 2026</div>
+    <h1>The Forty <em>Extra</em> Years</h1>
+    <p class="dek">America turns <strong>250 today</strong>. Set the parades aside for a moment and
+      look at the republic's quietest achievement: an American born in 1776 could expect about
+      <strong>38 years</strong> of life. A child born this morning can expect nearly <strong>79</strong>.</p>
+    <div class="stat-pair">
+      <div class="stat">
+        <div class="num">≈38</div>
+        <div class="lbl">Born 1776</div>
+      </div>
+      <div class="stat-arrow" aria-hidden="true">⟶</div>
+      <div class="stat now">
+        <div class="num">78.6</div>
+        <div class="lbl">Born 2026</div>
+      </div>
+    </div>
+    <div class="stat-caption">Life expectancy at birth, years · U.S., both sexes</div>
+  </div>
+  <div class="sky-hint" id="skyHint">Tap the sky for fireworks · scroll for the story</div>
+</header>
+
+<!-- ============================== CHART ============================== -->
+<section class="chart-section">
+  <div class="wide">
+    <div class="sec-head reveal">
+      <div class="eyebrow">The evidence</div>
+      <h2>Two and a half centuries, one line</h2>
+      <p class="lede">For America's first 125 years the line barely moved — a newborn in 1776
+        couldn't expect to see 40, and a century later still couldn't. Then sanitation, vaccines,
+        antisepsis, antibiotics, and public health bent the line upward, steeply, in a single
+        century. Hover the line; the gold dots are the moments that bent it.</p>
+    </div>
+    <div class="chart-scroll">
+      <div class="chart-wrap" id="chartWrap">
+        <div class="tooltip" id="tooltip" role="status"></div>
+      </div>
+    </div>
+    <div class="chart-notes">
+      <span class="key"><span class="swatch-dashed"></span> before 1900 — historians' estimates</span>
+      <span class="key"><span class="swatch-line"></span> 1900 on — national vital statistics</span>
+      <span class="key"><span class="swatch-dot"></span> milestone (hover or focus)</span>
+      <span class="key"><span class="swatch-dip">▼</span> pandemic notch</span>
+    </div>
+    <details class="data-table">
+      <summary>View the data as a table</summary>
+      <table>
+        <thead><tr><th scope="col">Year</th><th scope="col">Life expectancy at birth</th><th scope="col">Note</th></tr></thead>
+        <tbody>
+          <tr><td>1776</td><td>≈38</td><td>Declaration of Independence signed</td></tr>
+          <tr><td>1800</td><td>≈37</td><td></td></tr>
+          <tr><td>1850</td><td>≈39</td><td></td></tr>
+          <tr><td>1880</td><td>≈40</td><td>a full century, nearly flat</td></tr>
+          <tr><td>1900</td><td>47.3</td><td>national records begin</td></tr>
+          <tr><td>1918</td><td>39.1</td><td>influenza pandemic — a 12-year fall in one year</td></tr>
+          <tr><td>1920</td><td>54.1</td><td>full rebound in two years</td></tr>
+          <tr><td>1950</td><td>68.2</td><td>the antibiotic era</td></tr>
+          <tr><td>1980</td><td>73.7</td><td>smallpox eradicated worldwide</td></tr>
+          <tr><td>2000</td><td>76.8</td><td></td></tr>
+          <tr><td>2019</td><td>78.8</td><td>pre-pandemic peak</td></tr>
+          <tr><td>2021</td><td>76.4</td><td>COVID-19 notch</td></tr>
+          <tr><td>2023</td><td>78.4</td><td>recovery</td></tr>
+          <tr><td>2026</td><td>≈78.6</td><td>projected</td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+</section>
+
+<!-- ============================== TIMELINE ============================== -->
+<section>
+  <div class="wide">
+    <div class="sec-head reveal" style="text-align:center">
+      <div class="eyebrow">What bent the line</div>
+      <h2>Fifteen moments in 250 years</h2>
+    </div>
+    <div class="timeline" id="timeline"><!-- built by script --></div>
+  </div>
+</section>
+
+<!-- ============================== CODA ============================== -->
+<footer class="coda">
+  <div class="eyebrow">The experiment continues</div>
+  <h2>The next point on the line<br>gets written in places like this</h2>
+  <div class="measure">
+    <p>This page was built, on the nation's 250th birthday, inside the source code of
+      <strong style="color:var(--ink)">OpenMRS</strong> — the open-source medical record
+      system that grew out of Indianapolis and Boston and now runs in clinics and hospitals
+      across dozens of countries. It charts patients, not fireworks: every visit, every
+      vaccination, every vital sign, recorded so the next clinician can see the line and
+      bend it a little further.</p>
+    <p>That may be the most American thing on this page. A nation founded on a written
+      claim — that the point of government is life, liberty, and the pursuit of happiness —
+      keeps finding new ways to write the <em>life</em> part down and give the writing away.
+      Washington's inoculation order, the one-room lab that became the NIH, Salk refusing to
+      patent the polio vaccine (<em>“Could you patent the sun?”</em>), open-source medicine —
+      one long argument that the extra years belong to everyone.</p>
+  </div>
+  <div class="signoff">Happy 250th, America. 🎆</div>
+  <button class="encore" id="encoreBtn">One more volley</button>
+  <div class="colophon">
+    Life expectancy at birth, both sexes combined. 1900–2023: CDC / National Center for
+    Health Statistics, U.S. life tables; 2026 projected. Values before 1900 are scholarly
+    estimates (Haines, <em>Historical Statistics of the United States</em>) — drawn dashed
+    for honesty. Historical vignettes simplified; the past was messier and braver than
+    any timeline.
+  </div>
+</footer>
+
+<script>
+"use strict";
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* =============================== DATA =============================== */
+/* U.S. life expectancy at birth, both sexes. Pre-1900 = historians' estimates. */
+const SERIES = [
+  [1776,38.0],[1790,37.8],[1800,37.2],[1810,37.4],[1820,38.2],[1830,38.6],
+  [1840,39.5],[1850,39.4],[1860,41.8],[1870,44.0],[1880,40.5],[1890,43.5],
+  [1900,47.3],[1910,50.0],[1915,54.5],[1917,50.9],[1918,39.1],[1919,54.7],
+  [1920,54.1],[1930,59.7],[1940,62.9],[1950,68.2],[1960,69.7],[1970,70.8],
+  [1980,73.7],[1990,75.4],[2000,76.8],[2010,78.7],[2019,78.8],[2020,77.0],
+  [2021,76.4],[2023,78.4],[2026,78.6]
+];
+
+const MILESTONES = [
+  { y:1777, chart:true, bookend:"The smallpox bookend — opens",
+    t:"The first immunization order",
+    d:"At Morristown, George Washington orders the entire Continental Army inoculated against smallpox — a disease he called “more destructive… than the Sword.” It is arguably the first mass-immunization campaign ordered by any government, and it may have saved the Revolution." },
+  { y:1798, chart:true,
+    t:"The republic takes a pulse",
+    d:"John Adams signs the Act for the Relief of Sick and Disabled Seamen, taxing sailors' wages to build marine hospitals. That modest law is the seed of the U.S. Public Health Service." },
+  { y:1846, chart:true,
+    t:"Pain becomes optional",
+    d:"In the Ether Dome at Massachusetts General Hospital, William Morton publicly demonstrates surgical anesthesia. “Gentlemen, this is no humbug,” says the surgeon. Surgery stops being a race against a screaming clock." },
+  { y:1849,
+    t:"Elizabeth Blackwell, M.D.",
+    d:"At Geneva Medical College in upstate New York, Blackwell becomes the first woman in America to earn a medical degree — admitted, at first, as a joke by the student body. She got the last word: half of American medical students today are women." },
+  { y:1887, chart:true,
+    t:"A one-room laboratory",
+    d:"The Hygienic Laboratory opens in a single room on Staten Island, checking arriving ships for cholera. It grows up to become the National Institutes of Health, the largest funder of medical research on Earth." },
+  { y:1906, chart:true,
+    t:"The label must tell the truth",
+    d:"The Pure Food and Drug Act — born of muckraking journalism and Upton Sinclair's The Jungle — puts the federal government in the business of honest medicine. The FDA descends from it." },
+  { y:1918, chart:true, dip:true,
+    t:"The great dip",
+    d:"Influenza kills roughly 675,000 Americans. Life expectancy falls almost twelve years in a single year — the deepest notch in the line — then rebounds fully by 1920. The line remembers what the country learned about public health." },
+  { y:1943, chart:true,
+    t:"Mold goes to war",
+    d:"Penicillin was discovered in London, but it was scaled in Peoria, Illinois — a government lab, a moldy cantaloupe from a local market, and American industry. From 21 doses in 1943 to 2.3 million by D-Day." },
+  { y:1955, chart:true,
+    t:"“Safe, effective, and potent”",
+    d:"The Salk polio vaccine is announced after a field trial on 1.8 million schoolchildren — the largest medical experiment in history to that point. Church bells rang across the country. Asked who owned the patent, Salk replied: “Could you patent the sun?”" },
+  { y:1965, chart:true,
+    t:"Medicare and Medicaid",
+    d:"Lyndon Johnson signs both into law in Independence, Missouri, and hands the first Medicare card to Harry Truman. For the first time, growing old in America stops meaning growing poor from illness." },
+  { y:1980, chart:true, bookend:"The smallpox bookend — closes",
+    t:"The circle closes",
+    d:"Smallpox — the disease Washington fought at Morristown in 1777 — is declared eradicated from the face of the Earth, after a global campaign led by American epidemiologist D. A. Henderson. It remains the only human disease ever eradicated." },
+  { y:2003,
+    t:"The genome, spelled out",
+    d:"The Human Genome Project completes — thirteen years, twenty universities, six countries, led and largely funded from the United States, and released freely into the public domain. Every letter of the recipe for a human being, given away." },
+  { y:2004, chart:true,
+    t:"Medicine goes open source",
+    d:"In Indianapolis and Boston, the Regenstrief Institute and Partners In Health launch OpenMRS — a free, open-source medical record system now running in clinics and hospitals across dozens of countries. This page was written inside its codebase." },
+  { y:2020, chart:true, dip:true,
+    t:"One year, a vaccine",
+    d:"mRNA COVID-19 vaccines are authorized eleven months after the virus was first sequenced — the fastest vaccine development in history. The pandemic still cuts a second notch in the line: a reminder of why the speed mattered." },
+  { y:2023, chart:true,
+    t:"Editing the code itself",
+    d:"The FDA approves Casgevy, the first CRISPR gene-editing therapy, for sickle cell disease — medicine moving from treating the body to correcting the text it is written in." }
+];
+
+/* ============================ TIMELINE DOM ============================ */
+const tl = document.getElementById("timeline");
+for (const m of MILESTONES) {
+  const item = document.createElement("div");
+  item.className = "tl-item reveal" + (m.bookend ? " bookend" : "");
+  item.innerHTML =
+    '<div class="tl-year">' + m.y + '</div>' +
+    '<div class="tl-dot" aria-hidden="true"></div>' +
+    '<div class="tl-body">' +
+      (m.bookend ? '<div><span class="bookend-tag">✦ ' + m.bookend + '</span></div>' : '') +
+      '<h3>' + m.t + '</h3><p>' + m.d + '</p>' +
+    '</div>';
+  tl.appendChild(item);
+}
+
+/* scroll reveal */
+if (!reducedMotion && "IntersectionObserver" in window) {
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.1 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+} else {
+  document.querySelectorAll(".reveal").forEach(el => el.classList.add("in"));
+}
+
+/* =============================== CHART =============================== */
+const NS = "http://www.w3.org/2000/svg";
+const wrap = document.getElementById("chartWrap");
+const tooltip = document.getElementById("tooltip");
+const X0 = 1776, X1 = 2026, Y0 = 30, Y1 = 85;
+
+function valueAt(year) {
+  if (year <= SERIES[0][0]) return SERIES[0][1];
+  for (let i = 1; i < SERIES.length; i++) {
+    const [x1, v1] = SERIES[i];
+    if (year <= x1) {
+      const [x0, v0] = SERIES[i - 1];
+      return v0 + (v1 - v0) * (year - x0) / (x1 - x0);
+    }
+  }
+  return SERIES[SERIES.length - 1][1];
+}
+
+function el(name, attrs, parent) {
+  const n = document.createElementNS(NS, name);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+
+let chartGeom = null;
+
+function buildChart() {
+  wrap.querySelectorAll("svg").forEach(s => s.remove());
+  const container = wrap.parentElement;                    // .chart-scroll
+  const W = Math.max(680, Math.min(container.clientWidth, 1080));
+  const H = 480;
+  const M = { l: 52, r: 34, t: 26, b: 46 };
+  const iw = W - M.l - M.r, ih = H - M.t - M.b;
+  const x = yr => M.l + (yr - X0) / (X1 - X0) * iw;
+  const y = v  => M.t + (Y1 - v) / (Y1 - Y0) * ih;
+  chartGeom = { x, y, W, H, M };
+  wrap.style.width = W + "px";
+
+  const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}`,
+    role: "img", "aria-label": "Line chart of United States life expectancy at birth, 1776 to 2026, rising from about 38 years to about 79, with milestone markers. Data table available below." });
+  wrap.appendChild(svg);
+
+  const defs = el("defs", {}, svg);
+  const grad = el("linearGradient", { id: "goldArea", x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+  el("stop", { offset: "0%",  "stop-color": "#B8862B", "stop-opacity": .17 }, grad);
+  el("stop", { offset: "100%","stop-color": "#B8862B", "stop-opacity": 0   }, grad);
+
+  /* grid + axes */
+  const gGrid = el("g", {}, svg);
+  for (let v = Y0; v <= 80; v += 10) {
+    el("line", { x1: M.l, x2: W - M.r, y1: y(v), y2: y(v), stroke: "#1B2140", "stroke-width": 1 }, gGrid);
+    el("text", { x: M.l - 10, y: y(v) + 4, "text-anchor": "end", "font-size": 11.5,
+      fill: "#6E7490", "font-variant-numeric": "tabular-nums" }, gGrid).textContent = v;
+  }
+  el("text", { x: M.l - 10, y: M.t - 10, "text-anchor": "end", "font-size": 11, fill: "#6E7490" }, gGrid)
+    .textContent = "years";
+  for (const yr of [1776, 1826, 1876, 1926, 1976, 2026]) {
+    el("text", { x: x(yr), y: H - 14, "text-anchor": "middle", "font-size": 11.5,
+      fill: "#6E7490", "font-variant-numeric": "tabular-nums" }, gGrid).textContent = yr;
+    el("line", { x1: x(yr), x2: x(yr), y1: H - M.b, y2: H - M.b + 6, stroke: "#232A4A" }, gGrid);
+  }
+  el("line", { x1: M.l, x2: W - M.r, y1: H - M.b, y2: H - M.b, stroke: "#232A4A" }, gGrid);
+
+  /* area + line (dashed before 1900, solid after) */
+  const pts = SERIES.map(([yr, v]) => [x(yr), y(v)]);
+  const path = ps => ps.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+  const area = path(pts) + ` L ${x(2026).toFixed(1)} ${y(Y0)} L ${x(1776).toFixed(1)} ${y(Y0)} Z`;
+  el("path", { d: area, fill: "url(#goldArea)", stroke: "none" }, svg);
+
+  const split = SERIES.findIndex(([yr]) => yr === 1900);
+  el("path", { d: path(pts.slice(0, split + 1)), fill: "none", stroke: "#B8862B",
+    "stroke-width": 2, "stroke-dasharray": "5 5", "stroke-linecap": "round", opacity: .85 }, svg);
+  el("path", { d: path(pts.slice(split)), fill: "none", stroke: "#B8862B",
+    "stroke-width": 2.25, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+
+  /* pandemic notches — red marker + label (icon + text, never color alone) */
+  for (const dip of [{ yr: 1918, lbl: "1918 flu" }, { yr: 2021, lbl: "COVID-19" }]) {
+    const dx = x(dip.yr), dy = y(valueAt(dip.yr));
+    el("path", { d: `M ${dx} ${dy + 9} l -5 8 h 10 z`, fill: "#C65348" }, svg);
+    el("text", { x: dx, y: dy + 32, "text-anchor": "middle", "font-size": 11.5, fill: "#A7ACC2" }, svg)
+      .textContent = dip.lbl;
+  }
+
+  /* endpoint emphasis + direct labels */
+  el("circle", { cx: x(1776), cy: y(38), r: 4, fill: "#B8862B", stroke: "#0E1329", "stroke-width": 2 }, svg);
+  el("text", { x: x(1776) + 2, y: y(38) - 12, "font-size": 12.5, fill: "#E9E4D6",
+    "font-variant-numeric": "tabular-nums" }, svg).textContent = "≈38";
+  el("circle", { cx: x(2026), cy: y(78.6), r: 5, fill: "#E8B84B", stroke: "#0E1329", "stroke-width": 2 }, svg);
+  el("text", { x: x(2026) - 8, y: y(78.6) - 12, "text-anchor": "end", "font-size": 13, "font-weight": 600,
+    fill: "#E9E4D6", "font-variant-numeric": "tabular-nums" }, svg).textContent = "78.6";
+
+  /* crosshair */
+  const cross = el("line", { y1: M.t, y2: H - M.b, stroke: "#3A4370", "stroke-width": 1, opacity: 0 }, svg);
+  const crossDot = el("circle", { r: 3.5, fill: "#E8B84B", stroke: "#0E1329", "stroke-width": 1.5, opacity: 0 }, svg);
+
+  /* milestone dots (focusable) */
+  for (const m of MILESTONES.filter(m => m.chart)) {
+    const cx = x(m.y), cy = y(valueAt(m.y));
+    const dot = el("circle", { cx, cy, r: 4.5, fill: "#B8862B", stroke: "#0E1329", "stroke-width": 2,
+      tabindex: 0, role: "img", "aria-label": m.y + " — " + m.t, style: "cursor:pointer" }, svg);
+    const show = () => { showTooltip(m.y, true); dot.setAttribute("r", 6); };
+    const hide = () => { hideTooltip(); dot.setAttribute("r", 4.5); };
+    dot.addEventListener("mouseenter", show);
+    dot.addEventListener("mouseleave", hide);
+    dot.addEventListener("focus", show);
+    dot.addEventListener("blur", hide);
+  }
+
+  /* hover layer */
+  const hit = el("rect", { x: M.l, y: M.t, width: iw, height: ih, fill: "transparent" }, svg);
+  hit.addEventListener("pointermove", ev => {
+    const r = svg.getBoundingClientRect();
+    const yr = Math.round(X0 + (ev.clientX - r.left - M.l) / iw * (X1 - X0));
+    if (yr < X0 || yr > X1) { hideTooltip(); return; }
+    showTooltip(yr, false);
+  });
+  hit.addEventListener("pointerleave", hideTooltip);
+
+  function showTooltip(yr, isMilestone) {
+    const v = valueAt(yr);
+    cross.setAttribute("x1", x(yr)); cross.setAttribute("x2", x(yr));
+    cross.setAttribute("opacity", .8);
+    crossDot.setAttribute("cx", x(yr)); crossDot.setAttribute("cy", y(v));
+    crossDot.setAttribute("opacity", 1);
+    const near = MILESTONES.find(m => Math.abs(m.y - yr) <= (isMilestone ? 0 : 1));
+    tooltip.innerHTML =
+      '<span class="tt-year">' + yr + '</span> · <span class="tt-val">' +
+      (yr < 1900 ? "≈" : "") + v.toFixed(1) + ' years</span>' +
+      (near ? '<div class="tt-mile">' + near.t + '</div>' : '');
+    tooltip.style.opacity = 1;
+    const tx = Math.min(Math.max(x(yr) + 14, 4), W - 250);
+    const ty = Math.max(y(v) - 64, 4);
+    tooltip.style.left = tx + "px";
+    tooltip.style.top = ty + "px";
+  }
+  function hideTooltip() {
+    tooltip.style.opacity = 0;
+    cross.setAttribute("opacity", 0);
+    crossDot.setAttribute("opacity", 0);
+  }
+}
+buildChart();
+let rszT;
+addEventListener("resize", () => { clearTimeout(rszT); rszT = setTimeout(buildChart, 180); });
+
+/* ============================= FIREWORKS ============================= */
+(() => {
+  const canvas = document.getElementById("sky");
+  const ctx = canvas.getContext("2d");
+  let W = 0, H = 0, dpr = 1;
+  const SPARK = ["#E8B84B", "#F4E9C8", "#8FB7EF", "#D97A6C"];
+  const stars = [], rockets = [], sparks = [];
+  let running = false, heroVisible = true, lastLaunch = 0, raf = 0;
+
+  function resize() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    makeStars();
+    if (reducedMotion) drawStill();
+  }
+
+  function makeStars() {
+    stars.length = 0;
+    const n = Math.floor(W * H / 9000);
+    for (let i = 0; i < n; i++)
+      stars.push({ x: Math.random() * W, y: Math.random() * H * .82,
+        r: Math.random() * 1.1 + .3, p: Math.random() * Math.PI * 2, ring: false });
+    /* a faint Betsy Ross ring — thirteen brighter stars, upper right */
+    const cx = W * .78, cy = H * .24, R = Math.min(W, H) * .085;
+    for (let i = 0; i < 13; i++) {
+      const a = i / 13 * Math.PI * 2 - Math.PI / 2;
+      stars.push({ x: cx + Math.cos(a) * R, y: cy + Math.sin(a) * R,
+        r: 1.5, p: Math.random() * Math.PI * 2, ring: true });
+    }
+  }
+
+  function drawStars(t) {
+    for (const s of stars) {
+      const tw = .55 + .45 * Math.sin(t / 1400 + s.p);
+      ctx.globalAlpha = (s.ring ? .8 : .5) * tw;
+      ctx.fillStyle = s.ring ? "#E8DFC8" : "#B9BED2";
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function launch(tx) {
+    const x0 = tx !== undefined ? tx : W * (.15 + Math.random() * .7);
+    rockets.push({ x: x0, y: H + 8, vx: (Math.random() - .5) * .5,
+      vy: -(H * .0115 + Math.random() * H * .004),
+      target: H * (.16 + Math.random() * .3),
+      hue: SPARK[Math.random() < .55 ? 0 : Math.floor(Math.random() * SPARK.length)] });
+  }
+
+  function explode(r) {
+    const willow = Math.random() < .3;
+    const n = willow ? 90 : 60 + Math.floor(Math.random() * 50);
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const sp = (willow ? 1.4 : 2.2) * (0.3 + Math.random() * 1.4);
+      sparks.push({ x: r.x, y: r.y,
+        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - (willow ? .4 : 0),
+        life: 1, decay: willow ? .006 + Math.random() * .005 : .011 + Math.random() * .008,
+        drag: willow ? .995 : .985, grav: willow ? .028 : .02,
+        c: Math.random() < .8 ? r.hue : SPARK[Math.floor(Math.random() * SPARK.length)] });
+    }
+  }
+
+  function frame(t) {
+    if (!running) return;
+    ctx.clearRect(0, 0, W, H);
+    drawStars(t);
+    if (t - lastLaunch > 1000 + Math.random() * 900 && rockets.length + sparks.length < 900) {
+      launch(); lastLaunch = t;
+    }
+    for (let i = rockets.length - 1; i >= 0; i--) {
+      const r = rockets[i];
+      r.x += r.vx; r.y += r.vy; r.vy += .06;
+      ctx.globalAlpha = .9; ctx.fillStyle = "#F4E9C8";
+      ctx.beginPath(); ctx.arc(r.x, r.y, 1.6, 0, 7); ctx.fill();
+      ctx.globalAlpha = .25;
+      ctx.beginPath(); ctx.arc(r.x - r.vx * 2, r.y - r.vy * 1.5, 1.1, 0, 7); ctx.fill();
+      if (r.vy > -1.5 || r.y < r.target) { explode(r); rockets.splice(i, 1); }
+    }
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i];
+      s.x += s.vx; s.y += s.vy;
+      s.vx *= s.drag; s.vy = s.vy * s.drag + s.grav;
+      s.life -= s.decay;
+      if (s.life <= 0) { sparks.splice(i, 1); continue; }
+      ctx.globalAlpha = Math.max(s.life, 0) * .9;
+      ctx.fillStyle = s.c;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.life * 2.1 + .4, 0, 7); ctx.fill();
+    }
+    ctx.globalCompositeOperation = "source-over";
+    ctx.globalAlpha = 1;
+    raf = requestAnimationFrame(frame);
+  }
+
+  /* reduced motion: a still night — stars plus three frozen bursts */
+  function drawStill() {
+    ctx.clearRect(0, 0, W, H);
+    drawStars(0);
+    const bursts = [[.3, .3, .09], [.62, .2, .06], [.8, .42, .07]];
+    for (const [fx, fy, fr] of bursts) {
+      const cx = W * fx, cy = H * fy, R = Math.min(W, H) * fr;
+      for (let i = 0; i < 26; i++) {
+        const a = i / 26 * Math.PI * 2;
+        ctx.strokeStyle = "#E8B84B"; ctx.globalAlpha = .35; ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(a) * R * .35, cy + Math.sin(a) * R * .35);
+        ctx.lineTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R);
+        ctx.stroke();
+        ctx.globalAlpha = .55; ctx.fillStyle = "#F4E9C8";
+        ctx.beginPath(); ctx.arc(cx + Math.cos(a) * R, cy + Math.sin(a) * R, 1.4, 0, 7); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function setRunning(on) {
+    if (reducedMotion) return;
+    if (on && !running) { running = true; raf = requestAnimationFrame(frame); }
+    else if (!on && running) { running = false; cancelAnimationFrame(raf); }
+  }
+
+  resize();
+  addEventListener("resize", resize);
+  document.addEventListener("visibilitychange", () => setRunning(!document.hidden && heroVisible));
+  new IntersectionObserver(es => {
+    heroVisible = es[0].isIntersecting;
+    setRunning(heroVisible && !document.hidden);
+  }, { threshold: 0.05 }).observe(canvas);
+
+  const volley = px => {
+    if (reducedMotion) return;
+    for (let i = 0; i < 3; i++) setTimeout(() => launch(px), i * 240);
+  };
+  canvas.addEventListener("pointerdown", ev => volley(ev.clientX));
+  document.getElementById("encoreBtn").addEventListener("click", () => {
+    scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+    if (!reducedMotion) setTimeout(() => { volley(W * .35); volley(W * .65); }, 700);
+  });
+  if (reducedMotion) document.getElementById("skyHint").textContent = "Scroll for the story";
+})();
+</script>
